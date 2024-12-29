@@ -1,0 +1,15 @@
+{
+  "name": "channelify",
+  "image": "node:22.12.0-slim",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/channelify,type=bind,consistency=cached",
+  "workspaceFolder": "/channelify",
+  "customizations": {
+    "vscode": {
+      "extensions": [],
+      "settings": {
+        "editor.tabSize": 2,
+        "editor.detectIndentation": false
+      }
+    }
+  }
+}
