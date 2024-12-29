@@ -4,7 +4,7 @@ export class Channel<T> {
   private closed = false;
   private resolveQueue: ((value: T) => void)[] = [];
 
-  constructor(private bufferSize: number = 0) {}
+  constructor(private bufferSize: number = 0) { }
 
   // Send a value into the channel
   async send(value: T): Promise<void> {

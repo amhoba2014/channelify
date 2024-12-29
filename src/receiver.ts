@@ -2,7 +2,7 @@ import { Channel } from "./channel";
 
 // src/Receiver.ts
 export class Receiver<T> {
-  constructor(private channel: Channel<T>, private callback: (value: T) => void, private errorCallback: (error: Error) => void) {}
+  constructor(private channel: Channel<T>, private callback: (value: T) => void, private errorCallback: (error: Error) => void) { }
 
   // Start receiving from the channel
   async start() {
