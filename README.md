@@ -107,11 +107,18 @@ receiver.start();
 
 Contributions are welcome! If you find a bug, have a suggestion, or want to improve the project, feel free to open an issue or submit a pull request.
 
+To make contributing easier, we recommend using a devcontainer for a consistent development environment.
+
+### Steps to Contribute:
+
 1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Commit and push your changes
-5. Create a pull request
+2. Clone your fork and open the project in a compatible IDE (e.g., Visual Studio Code with Dev Containers support)
+3. Create a new branch
+4. Make your changes inside the devcontainer
+5. Commit and push your changes
+6. Create a pull request
+
+Devcontainers ensure that all contributors are working in the same environment, eliminating setup issues and ensuring compatibility.
 
 ## License
 
