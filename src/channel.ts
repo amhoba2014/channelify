@@ -1,5 +1,5 @@
 // src/Channel.ts
-export class Channel<T extends void | PromiseLike<void>> {
+export class Channel<T> {
   private queue: T[] = [];
   private closed = false;
   private resolveQueue: ((value: T) => void)[] = [];
@@ -16,7 +16,7 @@ export class Channel<T extends void | PromiseLike<void>> {
       this.queue.push(value);
       this._resolveNext();
     } else {
-      await new Promise<void>((resolve) => this.resolveQueue.push(resolve));
+      await new Promise<void>((resolve) => this.resolveQueue.push(resolve as any));
       this.send(value);
     }
   }
