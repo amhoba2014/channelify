@@ -109,7 +109,7 @@ Contributions are welcome! If you find a bug, have a suggestion, or want to impr
 
 To make contributing easier, we recommend using a devcontainer for a consistent development environment.
 
-### Steps to Contribute:
+### Steps to Contribute
 
 1. Fork the repository
 2. Clone your fork and open the project in a compatible IDE (e.g., Visual Studio Code with Dev Containers support)
