@@ -9,7 +9,7 @@
   },
   "customizations": {
     "vscode": {
-      "extensions": [],
+      "extensions": ["mhutchie.git-graph"],
       "settings": {
         "editor.tabSize": 2,
         "editor.detectIndentation": false
