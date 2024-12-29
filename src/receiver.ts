@@ -1,58 +1,70 @@
 /**
- * A receiver that handles channel values and errors.
+ * Represents a Receiver class.
  */
-export class Receiver<T> {
-  private value: T | undefined;
-  private isAdded: boolean = false;
-  private isDone: boolean = false;
-  private callback: ((err?: Error) => void) | null = null;
+export default class Receiver<T> {
+  private val: T;
+  private isAdded: boolean;
+  private err: Error | null;
+  private cb: ((err: Error | null) => void) | null;
+  private isDone: boolean;
 
-  constructor(value: T | undefined) {
-    this.value = value;
+  /**
+   * Initialize a `Receiver`.
+   *
+   * @param val - The value to be received
+   */
+  constructor(val: T) {
+    this.val = val;
+    this.isAdded = false;
+    this.err = null;
+    this.cb = null;
+    this.isDone = false;
   }
 
   /**
-   * Notify the receiver if it's been added or errored out.
+   * Call the callback if the pending add is complete.
+   *
+   * @private
    */
   private attemptNotify(): void {
-    if ((this.isAdded || this.isDone) && this.callback) {
+    if ((this.isAdded || this.err) && this.cb && !this.isDone) {
       this.isDone = true;
-      setImmediate(() => this.callback!());
+      setImmediate(() => {
+        if (this.cb) {
+          this.cb(this.err);
+        }
+      });
     }
   }
 
   /**
-   * Handle errors for the receiver.
+   * Reject the pending add with an error.
+   *
+   * @param err - The error to reject with
    */
   error(err: Error): void {
-    this.isAdded = false;
-    this.value = undefined;
-    this.callback = () => { throw err };
+    this.err = err;
     this.attemptNotify();
   }
 
   /**
-   * Add the value and notify the receiver.
+   * Get the `val` and set the state of the value to added
+   *
+   * @returns The value
    */
-  add(): T | undefined {
+  add(): T {
     this.isAdded = true;
     this.attemptNotify();
-    return this.value;
+    return this.val;
   }
 
   /**
-   * Register the callback to be invoked when the receiver is notified.
+   * Register the callback.
+   *
+   * @param cb - The callback function
    */
-  callback(cb: (err?: Error) => void): void {
-    this.callback = cb;
-    this.attemptNotify();
-  }
-
-  /**
-   * Complete the receiver’s process.
-   */
-  complete(): void {
-    this.isDone = true;
+  callback(cb: (err: Error | null) => void): void {
+    this.cb = cb;
     this.attemptNotify();
   }
 }

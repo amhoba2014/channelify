@@ -2,13 +2,23 @@
   "name": "channelify",
   "version": "1.0.0",
   "description": "A Go-style channel implementation for TypeScript, designed for type safety and seamless integration with async/await workflows.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "test": "mocha --require ts-node/register test/*.ts"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^5.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.2",
+    "@types/sinon": "^17.0.3",
+    "chai": "^5.1.2",
+    "mocha": "^11.0.1",
+    "sinon": "^19.0.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }
 }

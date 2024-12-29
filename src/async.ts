@@ -1,35 +1,47 @@
-import { Receiver } from './receiver';
-import { Channel } from './channel';
+/**
+ * Module dependencies.
+ */
+import Receiver from './receiver';
 
 /**
- * Add value to channel via async function or object with async method.
- *
- * @param {Channel<any>} ch - The channel to send values to.
- * @param {Function | object} fn - Async function or object with an async method.
- * @param {string} [method] - Method name (only if fn is an object).
- * @param {...any} args - Arguments for the async function (without callback).
- * @returns {Promise<void>}
+ * Expose `async`.
  */
-export async function async<T>(
-  ch: Channel<T>,
+export default async;
+
+/**
+ * Add value to channel via node-style async function.
+ *
+ * @param ch - Channel function
+ * @param fn - Async function or object with an async method
+ * @param method - Name of the method if `fn` is an object
+ * @param args - Async function arguments without callback
+ * @returns Thunk function
+ */
+function async(
+  ch: (err: Error | null, val: any) => (cb: (err: Error | null) => void) => void,
   fn: Function | Record<string, any>,
-  method?: string,
   ...args: any[]
-): Promise<void> {
-  const receiver = new Receiver<T>();
-  let context: any = null;
+): (cb: (err: Error | null) => void) => void {
+  const receiver = new Receiver(args);
+  let context: Record<string, any> | null = null;
 
   if (typeof fn === 'object') {
     context = fn;
-    fn = fn[method!];
+    fn = fn[args.shift() as string];
   }
 
-  try {
-    const result = await fn.apply(context, args);
-    await ch.add(result);
-  } catch (error) {
-    await ch.add(Promise.reject(error));
-  } finally {
-    receiver.complete();
-  }
+  args.push(function (err: Error | null, val: any) {
+    if (arguments.length > 2) {
+      val = Array.prototype.slice.call(arguments, 1);
+    }
+    ch(err, val)((error: Error | null) => {
+      receiver[error ? 'error' : 'add'](error);
+    });
+  });
+
+  fn.apply(context, args);
+
+  return function (cb: (err: Error | null) => void) {
+    receiver.callback(cb);
+  };
 }
