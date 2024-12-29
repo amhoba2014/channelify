@@ -3,6 +3,7 @@
   "image": "node:22.12.0-slim",
   "workspaceMount": "source=${localWorkspaceFolder},target=/channelify,type=bind,consistency=cached",
   "workspaceFolder": "/channelify",
+  "remoteUser": "node",
   "customizations": {
     "vscode": {
       "extensions": [],
